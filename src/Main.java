@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main
 {
-    public static int SIZE = 3;
+    public static int SIZE = 0;
     public static final char DOT_EMPTY = '•';
     public static final char DOT_X = 'X';
     public static final char DOT_O = 'O';
@@ -11,60 +11,91 @@ public class Main
     public static Scanner sc = new Scanner(System.in);
     public static Random rand = new Random();
     public static void main(String[] args) {
-        initMap(); //Формирование пустого поля
-        printMap();//Распечатка пустого поля на экран
-        while(true){
-            humanTurn(); //Ход человека
-            printMap(); //Распечатка поля на экран с учетом хода сделанного человеком
-            if(checkWin(DOT_X)){ //Проверка на победу
-                System.out.println("Победил человек");
-                break;
+        int i, j;
+        do{
+            System.out.println("Введите размер поля в формате X Y, при этом X=Y :");
+            i = sc.nextInt();
+            j = sc.nextInt();
+        }while (i != j || i < 3 || j < 3);
+        SIZE = i;
+        do{
+            initMap(); //Формирование пустого поля
+            printMap();//Распечатка пустого поля на экран
+            while(true){
+                humanTurn(); //Ход человека
+                printMap(); //Распечатка поля на экран с учетом хода сделанного человеком
+                if(checkWin(DOT_X)){ //Проверка на победу
+                    System.out.println("Победил человек");
+                    break;
+                }
+                if(isMapFull()){ //Проверка на ничью
+                    System.out.println("Ничья");
+                    break;
+                }
+                aiTurn();// Ход компьютера
+                printMap();//Распечатка поля на экран с учетом хода сделанного компьютером
+                if(checkWin(DOT_O)){ //Проверка на победу
+                    System.out.println("Победил Искуственный Интелект");
+                    break;
+                }
+                if(isMapFull()){ //Проверка на ничью
+                    System.out.println("Ничья");
+                    break;
+                }
+
             }
-            if(isMapFull()){ //Проверка на ничью
-                System.out.println("Ничья");
-                break;
-            }
-            aiTurn();// Ход компьютера
-            printMap();//Распечатка поля на экран с учетом хода сделанного компьютером
-            if(checkWin(DOT_O)){ //Проверка на победу
-                System.out.println("Победил Искуственный Интелект");
-                break;
-            }
-            if(isMapFull()){ //Проверка на ничью
-                System.out.println("Ничья");
-                break;
-            }
-        }
-        System.out.println("Игра закончена");
+            System.out.println("Игра закончена");
+            break;
+        }while (true);
     }
 
     public static boolean checkWin(char symb){
 
-         //Блок проверяет горизонталь
-        for (int i=0; i < map.length ; i++ ){
-            if(map[i][0] == symb && map[i][1] == symb && map[i][2]==symb) return true;
-        }
-
-        //Блок проверяет вертикаль
-        for (int i=0; i < map.length ; i++ ){
-            if(map[0][i] == symb && map[1][i] == symb && map[2][i]==symb) return true;
-        }
-
-        //Блок проверяет диагональ выходящую из точки [0][0]
-        for(int i=1; i < map.length; i++){
-            for(int j = 1; j< map.length; j++){
-                if(map[0][0] == symb && map[1][1] == symb && map[2][2] == symb ) return true;
+        //Блок проверяет выигрышную комбинацию на одной из строк
+        int sum_1 = 1;
+        for (int i=0; i < SIZE ; i++ ){
+            for (int j=1; j<SIZE ; j++ ){
+                if (map[i][j] == map[i][j-1] && map[i][j] == symb && map[i][0] == symb && map[i][SIZE-1] == symb){
+                    sum_1 += 1;
+                }
             }
         }
+        if(sum_1 == SIZE) return true;
 
-        //Блок проверяет диагональ выходящую из точки [0][2]
-        for(int i=1; i < map.length; i++){
-            for(int j = 1; j< map.length; j++){
-                if(map[0][2] == symb && map[1][1] == symb && map[2][0] == symb ) return true;
+        int sum_2 = 1; //Блок проверяет выигрышную комбинацию на одном из столбцов
+        for (int i=1; i < SIZE ; i++ ){
+            for (int j=0; j<SIZE ; j++ ){
+                if (map[i][j] == map[i-1][j] && map[i][j] == symb && map[0][j] == symb && map[SIZE-1][j] == symb){
+                    sum_2 += 1;
+                }
             }
         }
+        if(sum_2 == SIZE) return true;
 
-        return false;
+        int sum_3= 1; //Блок проверяет выигрышную комбинацию на диагонали, выходящей из точки map[1][1]
+
+        for (int i=1; i < SIZE ; i++ ){
+            for (int j=1; j<SIZE ; j++ ){
+                if ((i == j) && (map[i][j] == map[i-1][j-1] && map[i][j] == symb && map[0][0]==symb && map[SIZE-1][SIZE-1] == symb)){
+                    sum_3 += 1;
+                }
+            }
+        }
+        if(sum_3 == SIZE) return true;
+
+
+        int sum_4 = 1;//Блок проверяет выигрышную комбинацию на диагонали, выходящей из точки map[1][5]
+        for (int i=1; i < SIZE ; i++ ){
+            for (int j=0; j<SIZE-1 ; j++ ){
+                if ((i + j) == ((i-1)+(j+1)) && map[i][j] == map[i-1][j+1] && map[i][j] == symb && map[SIZE-1][0] == symb && map[0][SIZE-1] == symb){
+                    sum_4 += 1;
+                }
+            }
+        }
+        if(sum_4 == SIZE) return true;
+
+
+        else return false;
     }
 
     public static boolean isMapFull(){ //Проверяет, заполнен ли массив полностью
@@ -85,6 +116,7 @@ public class Main
         System.out.println("Компьютер сходил в точку " + (x + 1) + " " + (y + 1));
         map[y][x] = DOT_O;//Поместить в ячейку с координатами х, у символ О
     }
+
 
     public static void humanTurn(){//Ход человека
         int x, y;

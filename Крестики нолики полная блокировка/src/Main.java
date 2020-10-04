@@ -111,6 +111,10 @@ public class Main
 
     public static void aiTurn(){//Ход компьютера
         if (WinAiTrue()) WinTurnAi(); //Если есть выигрышная комбинация, то совершает выигрышный ход
+        else if ((SIZE) % 2 == 1 && isCellValid(((SIZE) / 2), ((SIZE) / 2))){//Блокирует сразу две диагонали
+            System.out.println("Компьютер сходил в точку " + ((SIZE) / 2 + 1) + " " + ((SIZE) / 2 + 1));
+            map[((SIZE) / 2)][((SIZE) / 2)] = DOT_O;
+        }
         else if (checkWinHuman(DOT_X)){ //Проверяет есть ли выигрышная комбинация у человека или комбинация из двух последовательных Х
             if(blockWinTurnHumanTrue()) blockWinTurnHuman(); //Если у человека есть предвыигрышная комбинация, то блокирует ее
             else blockTurnHuman();//Блокирует линию из 2х последовательно идущих Х

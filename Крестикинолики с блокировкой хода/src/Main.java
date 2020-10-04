@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main
 {
-    public static int SIZE = 5;
+    public static int SIZE = 3;
     public static final char DOT_EMPTY = '•';
     public static final char DOT_X = 'X';
     public static final char DOT_O = 'O';
@@ -11,13 +11,6 @@ public class Main
     public static Scanner sc = new Scanner(System.in);
     public static Random rand = new Random();
     public static void main(String[] args) {
-        int i =0, j =0;
-        do{
-            System.out.println("Введите размер поля в формате X Y, при этом X=Y: ");
-            i = sc.nextInt();
-            j = sc.nextInt();
-        }while(i != j || i < 3);
-        SIZE = i;
         initMap(); //Формирование пустого поля
         printMap();//Распечатка пустого поля на экран
         while(true){
@@ -41,61 +34,35 @@ public class Main
                 System.out.println("Ничья");
                 break;
             }
-
-
-            if(isMapFull()){ //Проверка на ничью
-                System.out.println("Ничья");
-                break;
-            }
         }
         System.out.println("Игра закончена");
     }
 
     public static boolean checkWin(char symb){
 
-        //Блок проверяет выигрышную комбинацию на одной из строк
-        int sum_1 = 1;
-        for (int i=0; i < SIZE ; i++ ){
-            for (int j=1; j<SIZE ; j++ ){
-                if (map[i][j] == map[i][j-1] && map[i][j] == symb && map[i][0] == symb && map[i][SIZE-1] == symb){
-                    sum_1 += 1;
-                }
+         //Блок проверяет горизонталь
+        for (int i=0; i < map.length ; i++ ){
+            if(map[i][0] == symb && map[i][1] == symb && map[i][2]==symb) return true;
+        }
+
+        //Блок проверяет вертикаль
+        for (int i=0; i < map.length ; i++ ){
+            if(map[0][i] == symb && map[1][i] == symb && map[2][i]==symb) return true;
+        }
+
+        //Блок проверяет диагональ выходящую из точки [0][0]
+        for(int i=1; i < map.length; i++){
+            for(int j = 1; j< map.length; j++){
+                if(map[0][0] == symb && map[1][1] == symb && map[2][2] == symb ) return true;
             }
         }
-        if(sum_1 == SIZE) return true;
 
-
-        int sum_2 = 1; //Блок проверяет выигрышную комбинацию на одном из столбцов
-        for (int i=1; i < SIZE ; i++ ){
-            for (int j=0; j<SIZE ; j++ ){
-                if (map[i][j] == map[i-1][j] && map[i][j] == symb && map[0][j] == symb && map[SIZE-1][j] == symb){
-                    sum_2 += 1;
-                }
+        //Блок проверяет диагональ выходящую из точки [0][2]
+        for(int i=1; i < map.length; i++){
+            for(int j = 1; j< map.length; j++){
+                if(map[0][2] == symb && map[1][1] == symb && map[2][0] == symb ) return true;
             }
         }
-        if(sum_2 == SIZE) return true;
-
-        //Блок проверяет выигрышную комбинацию на диагонали, выходящей из точки map[1][1]
-        int sum_3 =1;
-        for (int i=1; i < SIZE ; i++ ){
-            for (int j=1; j<SIZE ; j++ ){
-                if ((i == j) && (map[i][j] == map[i-1][j-1] && map[i][j] == symb && map[0][0]==symb && map[SIZE-1][SIZE-1] == symb)){
-                    sum_3 += 1;
-                }
-            }
-        }
-        if(sum_3 == SIZE) return true;
-
-
-        int sum_4 = 1;//Блок проверяет выигрышную комбинацию на диагонали, выходящей из точки map[1][5]
-        for (int i=1; i < SIZE ; i++ ){
-            for (int j=0; j<SIZE-1 ; j++ ){
-                if ((i + j) == ((i-1)+(j+1)) && map[i][j] == map[i-1][j+1] && map[i][j] == symb && map[SIZE-1][0] == symb && map[0][SIZE-1] == symb){
-                    sum_4 += 1;
-                }
-            }
-        }
-        if(sum_4 == SIZE) return true;
 
         return false;
     }
@@ -110,14 +77,14 @@ public class Main
     }
 
     public static void aiTurn(){//Ход компьютера
-        if (WinAiTrue()) WinTurnAi();
-        else if (checkWinHuman(DOT_X)){
-            if(blockWinTurnHumanTrue()) blockWinTurnHuman();
-            else blockTurnHuman();
-        }
-        else aiTurnRandom();
+        int x, y;
+        do{
+            x = rand.nextInt(SIZE);
+            y = rand.nextInt(SIZE);
+        }while (!isCellValid(x, y));//Условие проверяет свободна ли ячейка с вводимыми координатами и существует ли такая ячейка
+        System.out.println("Компьютер сходил в точку " + (x + 1) + " " + (y + 1));
+        map[y][x] = DOT_O;//Поместить в ячейку с координатами х, у символ О
     }
-
 
     public static void humanTurn(){//Ход человека
         int x, y;
@@ -158,170 +125,4 @@ public class Main
         }
         System.out.println();
     }
-
-    public static boolean checkWinHuman(char symb){ //Проверяет предвыирышную комбинацию человека
-
-        //Блок проверяет предвыигрышную комбинацию на одной из строк
-        int c = 0;
-        int s = 0;
-        for (int i=0; i < SIZE ; i++ ){
-            int sum_1 = 0;
-            c = 0;
-            s =0;
-            for (int j=0; j<SIZE; j++ ){
-                if (map[i][j] == symb) sum_1 += 1;
-                if(map[i][j] == DOT_EMPTY) c += 1;
-                if(map[i][j] == DOT_O) s += 1;
-                if(sum_1 >= 2 && c >= 1 && s == 0) return true;
-            }
-        }
-
-
-        int sum_2 = 0; //Блок проверяет предвыигрышную комбинацию на одном из столбцов
-        for (int j=0; j < SIZE ; j++ ){
-            sum_2 = 0;
-            c = 0;
-            s = 0;
-            for (int i=0; i<SIZE ; i++ ){
-                if (map[i][j] == symb) sum_2 += 1;
-                if(map[i][j] == DOT_EMPTY) c += 1;
-                if(map[i][j] == DOT_O) s += 1;
-                if(sum_2 >= 2 && c >= 1 && s == 0) return true;
-            }
-        }
-
-        //Блок проверяет предвыигрышную комбинацию на диагонали, выходящей из точки map[1][1]
-        int sum_3 = 0;
-        c = 0;
-        s = 0;
-        for (int i=0; i < SIZE; i++ ){
-            for (int j=0; j<SIZE; j++ ){
-                if ((i == j) && map[i][j] == symb) sum_3 += 1;
-                if ((i == j) && map[i][j] == DOT_EMPTY) c += 1;
-                if ((i == j) && map[i][j] == DOT_O) s += 1;
-                if(sum_3 >= 2 && c >= 1 && s == 0) return true;
-            }
-        }
-
-        int sum_4 = 0;//Блок проверяет предвыигрышную комбинацию на диагонали, выходящей из точки map[1][SIZE]
-        c = 0;
-        for (int i=0; i < SIZE; i++ ){
-            for (int j=0; j<SIZE ; j++ ){
-                if ((i + j) == SIZE-1 && map[i][j] == DOT_EMPTY) c += 1;
-                if ((i + j) == SIZE-1 && map[i][j] == symb) sum_4 += 1;
-                if ((i + j) == SIZE-1 && map[i][j] == DOT_O) s += 1;
-                if(sum_4 >= 2 && c >= 1 && s == 0) return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    public static void aiTurnRandom(){//Рандомный ход компьютера
-        int x, y;
-        do{
-            x = rand.nextInt(SIZE);
-            y = rand.nextInt(SIZE);
-        }while (!isCellValid(x, y));//Условие проверяет свободна ли ячейка с вводимыми координатами и существует ли такая ячейка
-        System.out.println("Компьютер сходил в точку " + (x + 1) + " " + (y + 1));
-        map[y][x] = DOT_O;//Поместить в ячейку с координатами х, у символ О
-    }
-
-    public static void blockWinTurnHuman(){
-        boolean a = true;
-        for(int i = 0; i < SIZE; i++){
-            for(int j=0; j < SIZE; j++){
-                int y = i;
-                int x = j;
-                if(isCellValid(x, y)){
-                    map[y][x] = DOT_X;
-                    if(checkWin(DOT_X) && a == true){
-                        System.out.println("Компьютер заблокировал точку " + (x + 1) + " " + (y + 1));
-                        map[y][x] = DOT_O;
-                        a = false;
-                        break;
-                    }
-                    map[y][x] = DOT_EMPTY;
-                }
-            }
-        }
-    }
-
-    public static boolean WinAiTrue(){
-        for(int i = 0; i < SIZE; i++){
-            for(int j=0; j < SIZE; j++){
-                int y = i;
-                int x = j;
-                if(isCellValid(x, y)){
-                    map[y][x] = DOT_O;
-                    if(checkWin(DOT_O)){
-                        map[y][x] = DOT_EMPTY;
-                        return true;
-                    }
-                    map[y][x] = DOT_EMPTY;
-                }
-            }
-        }
-        return false;
-    }
-
-    public static void WinTurnAi(){
-        boolean a = true;
-        for(int i = 0; i < SIZE; i++){
-            for(int j=0; j < SIZE; j++){
-                int y = i;
-                int x = j;
-                if(isCellValid(x, y)){
-                    map[y][x] = DOT_O;
-                    if(checkWin(DOT_O) && a == true){
-                        System.out.println("Компьютер сходил в точку " + (x + 1) + " " + (y + 1));
-                        map[y][x] = DOT_O;
-                        a = false;
-                        break;
-                    }
-                    map[y][x] = DOT_EMPTY;
-                }
-            }
-        }
-    }
-
-    public static boolean blockWinTurnHumanTrue(){
-        for(int i = 0; i < SIZE; i++){
-            for(int j=0; j < SIZE; j++){
-                int y = i;
-                int x = j;
-                if(isCellValid(x, y)){
-                    map[y][x] = DOT_X;
-                    if(checkWin(DOT_X)){
-                        map[y][x] = DOT_EMPTY;
-                        return true;
-                    }
-                    map[y][x] = DOT_EMPTY;
-                }
-            }
-        }
-        return false;
-    }
-
-    public static void blockTurnHuman(){
-        boolean a = true;
-        for(int i = 0; i < SIZE; i++){
-            for(int j=0; j < SIZE; j++){
-                int y = i;
-                int x = j;
-                if(isCellValid(x, y)){
-                    map[y][x] = DOT_X;
-                    if(checkWinHuman(DOT_X) && a == true){
-                        System.out.println("Компьютер заблокировал точку " + (x + 1) + " " + (y + 1));
-                        map[y][x] = DOT_O;
-                        a = false;
-                        break;
-                    }
-                    map[y][x] = DOT_EMPTY;
-                }
-            }
-        }
-    }
-
 }

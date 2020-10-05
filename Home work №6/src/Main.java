@@ -1,31 +1,37 @@
 public class Main {
 
     public static void main(String[] args) {
-        BullTerrier BullTerrier_1 = new BullTerrier("Дружок", 510, 9, 0.5f);
-        BullTerrier_1.run();
-        BullTerrier_1.swim();
-        BullTerrier_1.jump();
+        Cat SiameseCat1 = new Cat("Васька", "SiameseCat", 200, 50, 1.1F);
+        SiameseCat1.run();
+        SiameseCat1.swim();
+        SiameseCat1.jump();
 
         System.out.println();
 
-        GermanShepherd GermanShepherd_1 = new GermanShepherd("Шарик", 730, 15, 1.25f);
-        GermanShepherd_1.run();
-        GermanShepherd_1.swim();
-        GermanShepherd_1.jump();
+        Cat BengalCat1 = new Cat("Мурзик", "BengalCat", 500, 23, 1.4F);
+        BengalCat1.run();
+        BengalCat1.swim();
+        BengalCat1.jump();
 
         System.out.println();
 
-
-        BengalCat BengalCat_1 = new BengalCat("Мурзик", 150, 3, 1);
-        BengalCat_1.run();
-        BengalCat_1.swim();
-        BengalCat_1.jump();
+        Dog GermanShepherd1 = new Dog("Шарик", "GermanShepherd", 568, 12, 2.3F);
+        GermanShepherd1.run();
+        GermanShepherd1.swim();
+        GermanShepherd1.jump();
 
         System.out.println();
 
-        SiameseCat SiameseCat_1 = new SiameseCat("Багира", 600, 1, 3);
-        SiameseCat_1.run();
-        SiameseCat_1.swim();
-        SiameseCat_1.jump();
+        Dog BullTerrier1 = new Dog("Бобик", "BullTerrier", 975, 9, 0.9F);
+        BullTerrier1.run();
+        BullTerrier1.swim();
+        BullTerrier1.jump();
+
+        System.out.println();
+
+        Dog Dvornyaga1 = new Dog("Тузик", "Дворняга", 435, 23, 0.3F);
+        Dvornyaga1.run();
+        Dvornyaga1.swim();
+        Dvornyaga1.jump();
     }
 }

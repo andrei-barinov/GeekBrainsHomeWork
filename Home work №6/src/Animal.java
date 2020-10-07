@@ -1,4 +1,4 @@
-public class Animal {
+public abstract class Animal {
 
     protected String name;
     protected String breed;
@@ -14,9 +14,9 @@ public class Animal {
         this.jump = jump;
     }
 
-    public void jump(){};
+    public abstract void jump();
 
-    public void run(){};
+    public  abstract void run();
 
-    public void swim(){};
+    public abstract void swim();
 }

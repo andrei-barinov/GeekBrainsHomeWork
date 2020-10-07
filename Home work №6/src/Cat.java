@@ -1,20 +1,7 @@
 public class Cat extends Animal {
-    private String name;
-    private String breed;
-    private int run;
-    private int swim;
-    private float jump;
 
     public Cat(String name, String breed, int run, int swim, float jump) {
-        this.name = name;
-        this.breed = breed;
-        this.run = run;
-        this.swim = swim;
-        this.jump = jump;
-    }
-
-    public Cat(){
-
+        super(name, breed, run, swim, jump);
     }
 
     @Override

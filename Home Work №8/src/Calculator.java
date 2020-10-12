@@ -13,7 +13,7 @@ public class Calculator {
         JPanel top = new JPanel();
         JPanel bottom = new JPanel();
         top.setLayout(new GridLayout());
-        bottom.setLayout(new GridLayout(5, 3));
+        bottom.setLayout(new GridLayout(6, 3));
         mainFrame.add(top, BorderLayout.NORTH);
         mainFrame.add(bottom, BorderLayout.CENTER);
 
@@ -35,6 +35,14 @@ public class Calculator {
         JButton minusBtn = new JButton("-");
         bottom.add(minusBtn);
         minusBtn.addActionListener(abListener);
+
+        JButton multBtn = new JButton("*");
+        bottom.add(multBtn);
+        multBtn.addActionListener(abListener);
+
+        JButton devBtn = new JButton("/");
+        bottom.add(devBtn);
+        devBtn.addActionListener(abListener);
 
         JButton CancelBtn = new JButton("C");
         bottom.add(CancelBtn);

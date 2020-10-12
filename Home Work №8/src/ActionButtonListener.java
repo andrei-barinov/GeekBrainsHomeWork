@@ -15,12 +15,8 @@ public class ActionButtonListener  implements ActionListener {
         this.sb = new StringBuilder();
     }
 
-    public  String covertExplanation (String explanation) throws ScriptException {
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("Nashorn");
-        Object expResult1 = scriptEngine.eval(explanation);
-        String result = expResult1.toString();
-        return result;
+    public  void covertExplanation (String explanation){
+
     }
 
 
@@ -32,8 +28,15 @@ public class ActionButtonListener  implements ActionListener {
         }
         else if (jButton.getText() == "=") {
             String explanation = outField.getText();
-            String result = covertExplanation(explanation);
-            outField.setText(result.toString());
+            try{
+                ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+                ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("Nashorn");
+                Object expResult1 = scriptEngine.eval(explanation);
+                String result = expResult1.toString();
+                outField.setText(result.toString());
+            } catch (Exception c){
+                c.printStackTrace();
+            }
             /*int indexMinus = explanation.indexOf("-"); //Сложение и вычитание для двух чисел
             if (indexMinus != -1) {
                 int a = Integer.parseInt(explanation.substring(0, indexMinus));

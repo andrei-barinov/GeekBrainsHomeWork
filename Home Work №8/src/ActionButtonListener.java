@@ -34,6 +34,7 @@ public class ActionButtonListener  implements ActionListener {
                 Object expResult1 = scriptEngine.eval(explanation);
                 String result = expResult1.toString();
                 outField.setText(result.toString());
+                sb.setLength(0);
             } catch (Exception c){
                 c.printStackTrace();
             }

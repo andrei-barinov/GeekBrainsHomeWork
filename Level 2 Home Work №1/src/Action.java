@@ -1,4 +1,4 @@
 public interface Action {
-    public void run(Human my);
-    public void jump(int a, int b);
+    public void run(Track[] t);
+    public void jump(Wall[] w);
 }

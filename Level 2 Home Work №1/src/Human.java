@@ -1,4 +1,3 @@
-import javax.sound.midi.Track;
 
 public class Human implements Action {
     private String name;
@@ -7,28 +6,35 @@ public class Human implements Action {
 
     public Human(String name, int humanLength, int humanHeight) {
         this.name = name;
-        HumanLength = humanLength;
-        HumanHeight = humanHeight;
+        this.HumanLength = humanLength;
+        this.HumanHeight = humanHeight;
     }
 
-    public int getHumanLength() {
-        return HumanLength;
-    }
 
-    public int getHumanHeight() {
-        return HumanHeight;
+    @Override
+    public void run(Track[] t) {
+        boolean a = true;
+        for(Track n: t){
+            if (this.HumanLength > n.getLength()) System.out.println("Человек " + this.name + " пробежал дистанцию " + n.getLength() + " м");
+            else{
+                System.out.println("Человек " + this.name + " не пробежал дистанцию " + n.getLength() + " м");
+                a = false;
+            }
+            if (a == false) break;
+        }
     }
 
     @Override
-    public void run(int HumanLength, int TrackLength) {
-        if (HumanLength > TrackLength) System.out.println("Человек " + this.name + " пробежал дистанцию " + TrackLength + " м");
-        else System.out.println("Человек " + this.name + " не пробежал дистанцию " + TrackLength + " м");
-    }
-
-    @Override
-    public void jump(int HumanHeight, int WallHeigth) {
-        if (HumanHeight > WallHeigth) System.out.println("Человек " +  this.name + " перепрыгнул препятствие высотой " + WallHeigth + " м" );
-        else System.out.println("Человек " + this.name + " не перепрыгнул препятствие высотой " + WallHeigth + " м");
+    public void jump(Wall[] w) {
+        boolean a = true;
+        for(Wall n: w){
+            if (this.HumanHeight > n.getHeight()) System.out.println("Человек " +  this.name + " перепрыгнул препятствие высотой " + n.getHeight() + " м" );
+            else{
+                System.out.println("Человек " + this.name + " не перепрыгнул препятствие высотой " + n.getHeight() + " м");
+                a = false;
+            }
+            if (a == false) break;
+        }
     }
 
 }

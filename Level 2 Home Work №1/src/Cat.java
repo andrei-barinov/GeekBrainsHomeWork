@@ -10,28 +10,22 @@ public class Cat implements Action {
     }
 
     @Override
-    public void run(Track[] t) {
-        boolean a = true;
-        for(Track n: t){
-            if (this.CatLength > n.getLength()) System.out.println("Кот " + this.name + " пробежал дистанцию " + n.getLength() + " м");
-            else{
-                System.out.println("Кот " + this.name + " не пробежал дистанцию " + n.getLength() + " м");
-                a = false;
+    public void doAction(Obstacles[] w) {
+        for(Obstacles n: w){
+            if(n instanceof Wall){
+                if (this.CatHeight > n.getParameter()) System.out.println("Кот " +  this.name + " перепрыгнул препятствие высотой " + n.getParameter() + " м" );
+                else{
+                    System.out.println("Кот " + this.name + " не перепрыгнул препятствие высотой " + n.getParameter() + " м");
+                    break;
+                }
             }
-            if (a == false) break;
-        }
-    }
-
-    @Override
-    public void jump(Wall[] w) {
-        boolean a = true;
-        for(Wall n: w){
-            if (this.CatHeight > n.getHeight()) System.out.println("Кот " + this.name +  " перепрыгнул препятствие высотой " + n.getHeight() + " м");
             else{
-                System.out.println("Кот " + this.name + " не перепрыгнул препятствие высотой " + n.getHeight() + " м");
-                a = false;
+                if (this.CatLength > n.getParameter()) System.out.println("Кот " +  this.name + " пробежал дистанцию " + n.getParameter() + " м" );
+                else{
+                    System.out.println("Кот " + this.name + " не пробежал дистанцию " + n.getParameter() + " м");
+                    break;
+                }
             }
-            if(a == false) break;
         }
     }
 }

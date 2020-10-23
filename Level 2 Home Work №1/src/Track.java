@@ -1,11 +1,11 @@
-public class Track {
+public class Track implements Obstacles {
     private int length;
 
     public Track(int length){
         this.length = length;
     }
 
-    public int getLength() {
+    public int getParameter() {
         return length;
     }
 }

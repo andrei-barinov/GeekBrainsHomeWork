@@ -8,23 +8,18 @@ public class Main {
                 new Robot("robot_1", 10, 1),
         };
 
-        Wall[] wall = {
+        Obstacles[] obstacles = {
                 new Wall(1),
-                new Wall(2),
-                new Wall(3)
-        };
-
-        Track[] track = {
                 new Track(10),
+                new Wall(2),
                 new Track(100),
-                new Track(10000)
+                new Wall(3),
+                new Track(1000)
         };
 
-        for(Action creature: creatures){
-            creature.run(track);
-            creature.jump(wall);
-            System.out.println();
-        }
+        for (Action creature : creatures) {
+            creature.doAction(obstacles);
 
+        }
     }
 }

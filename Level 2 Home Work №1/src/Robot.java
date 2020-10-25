@@ -1,32 +1,23 @@
-public class Robot implements Action{
+public class Robot implements Participant{
     private String name;
-    private int RobotLength;
-    private int RobotHeight;
+    private int robLen;
+    private int robHeight;
 
-    public Robot(String name, int robotLength, int robotHeight) {
+    public Robot(String name, int robLen, int robHeight) {
         this.name = name;
-        this.RobotLength = robotLength;
-        this.RobotHeight = robotHeight;
+        this.robLen = robLen;
+        this.robHeight = robHeight;
     }
 
+    public String getName(){
+        return name;
 
-    @Override
-    public void doAction(Obstacles[] w) {
-        for(Obstacles n: w){
-            if(n instanceof Wall){
-                if (this.RobotHeight > n.getParameter()) System.out.println("Робот " +  this.name + " перепрыгнул препятствие высотой " + n.getParameter() + " м" );
-                else{
-                    System.out.println("Робот " + this.name + " не перепрыгнул препятствие высотой " + n.getParameter() + " м");
-                    break;
-                }
-            }
-            else{
-                if (this.RobotLength > n.getParameter()) System.out.println("Робот " +  this.name + " пробежал дистанцию " + n.getParameter() + " м" );
-                else{
-                    System.out.println("Робот " + this.name + " не пробежал дистанцию " + n.getParameter() + " м");
-                    break;
-                }
-            }
-        }
+    }
+    public int getHeight(){
+        return robHeight;
+    }
+
+    public int getLen(){
+        return robLen;
     }
 }

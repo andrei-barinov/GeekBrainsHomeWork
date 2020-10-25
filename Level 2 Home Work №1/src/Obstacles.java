@@ -1,3 +1,4 @@
 public interface Obstacles {
-    public int getParameter();
+    public void pass(Participant p);
+    public boolean breakCicle(Participant p);
 }

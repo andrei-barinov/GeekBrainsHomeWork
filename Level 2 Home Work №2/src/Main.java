@@ -44,7 +44,7 @@ public class Main
         try{
             new ArrayCapacity().doCheckArray(arr);
         } catch (MyArraySizeException ex){
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -53,6 +53,7 @@ public class Main
             new ArrayCapacity().checkTypeOfValue(arr);
         } catch (MyArrayDataException ex){
             System.out.println(ex.getMessage());
+            //ex.printStackTrace();
         }
     }
 
@@ -68,8 +69,13 @@ public class Main
     }
 
     static boolean checkArr(String[][] arr){
-        if(arr.length != 4 || arr[0].length != 4 || arr[1].length != 4 || arr[2].length != 4 || arr[3].length != 4) return false;
-        else return true;
+        int SIZE = 4;
+        for(int i = 0; i < arr.length; i++){
+            for (int j = 0; j < arr[i].length; j++){
+                if (arr.length != SIZE || arr[i].length != SIZE) return false;
+            }
+        }
+        return true;
     }
 
     static void inputArr(String[][] arr){ //Ввод значений массива

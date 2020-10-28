@@ -1,14 +1,19 @@
 public class ArrayCapacity {
     public boolean doCheckArray(String[][] a) throws MyArraySizeException {
-        if (a.length != 4 || a[0].length != 4 || a[1].length != 4 || a[2].length != 4 || a[3].length != 4) {
-            throw new MyArraySizeException("Введите массив размером 4х4");
+        int SIZE = 4;
+        for(int i = 0; i < a.length; i++){
+            for (int j = 0; j < a[i].length; j++){
+                if (a.length != SIZE || a[i].length != SIZE) {
+                    throw new MyArraySizeException("Введите массив размером " + SIZE + "х" + SIZE);
+                }
+            }
         }
         return true;
     }
 
     public boolean checkTypeOfValue(String[][] arr) throws MyArrayDataException {
         for(int i = 0; i < arr.length; i++){
-            for (int j = 0; j < arr[0].length; j++){
+            for (int j = 0; j < arr[i].length; j++){
                 char[] b = arr[i][j].toCharArray();
                 for(int k = 0; k < b.length; k++){
                     if (!Character.isDigit(b[k])){

@@ -55,9 +55,11 @@ public class Main
         telephoneDirectory.add("Матросов", "+79405749893");
         telephoneDirectory.add("Семенов", "+791035466893");
 
-        telephoneDirectory.get("Смирнов");
+        String name = "Смирнов";
+        System.out.println(name + ":" + "\n" + telephoneDirectory.get(name));
         System.out.println();
-        telephoneDirectory.get("Иванов");
+        name = "Иванов";
+        System.out.println(name + ":" + "\n" + telephoneDirectory.get(name));
     }
 
 

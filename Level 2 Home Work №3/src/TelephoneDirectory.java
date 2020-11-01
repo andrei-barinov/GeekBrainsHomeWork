@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class TelephoneDirectory {
     private Map<String, Set<String>> telDir = new HashMap<>();
-    private Set<String> tel = new HashSet<>();
+
 
 
     public void add(String surname, String number){
@@ -15,12 +15,9 @@ public class TelephoneDirectory {
     }
 
 
-    public void get(String surname){
+    public Set<String> get(String surname){
         Set<String> set = telDir.get(surname);
-        System.out.println(surname + ":");
-        for(String s: set){
-            System.out.println(s);
-        }
+        return set;
     }
 
     public void printBook(){

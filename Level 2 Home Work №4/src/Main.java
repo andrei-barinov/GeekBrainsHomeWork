@@ -10,7 +10,7 @@ public class Main {
         ValueComparator newTree = new ValueComparator(tree);
         TreeMap<String, Integer> sorted_tree = new TreeMap<String, Integer>(newTree);
 
-        tree.put("1", 3);
+        tree.put("1", 0);
         tree.put("2", 10);
         tree.put("3", 1);
         tree.put("4", 17);

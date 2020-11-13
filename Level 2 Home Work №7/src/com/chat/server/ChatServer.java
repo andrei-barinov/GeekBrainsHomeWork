@@ -35,9 +35,24 @@ public class ChatServer implements Server {
 
     @Override
     public void broadcastMessage(String message) {
-        clients.forEach(client -> {
+        if (message.startsWith("/w")) {
+            String[] inputMessage = message.split("\\s");
+            String ourClient = inputMessage[1];
+            String newMessage = "";
+            for(int i=2; i < inputMessage.length; i++){
+                newMessage += inputMessage[i];
+            }
+            for(ClientHandler client: clients){
+                if(ourClient.equals(client.getName())){
+                    client.sendMessage(newMessage);
+                }
+            }
+        }
+        else clients.forEach(client -> {
             client.sendMessage(message);
         });
+
+
     }
 
     @Override
@@ -62,4 +77,6 @@ public class ChatServer implements Server {
     public AuthenticationService getAuthenticationService() {
         return authenticationService;
     }
+
+
 }

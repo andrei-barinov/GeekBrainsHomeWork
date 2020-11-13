@@ -15,6 +15,7 @@ public class ClientHandler {
 
     public ClientHandler(Server server, Socket socket) {
         try {
+
             this.server = server;
             this.socket = socket;
             in = new DataInputStream(socket.getInputStream());
@@ -78,6 +79,7 @@ public class ClientHandler {
                                     }
                             );
                 }
+                return;
             }
         }catch (IOException e){
             throw new RuntimeException("Что-то пошло не так", e);

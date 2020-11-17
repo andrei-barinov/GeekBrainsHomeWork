@@ -13,19 +13,10 @@ public class Main
         list.add("BMW");
         list.add("TOYOTA");
         list.add("GAZ");
-
-        GBIterator iterator = list.iterator();
-        while(iterator.hasNext()){
-            String next = iterator.next();
-            System.out.println(next);
-        }
-
+        list.add("HYNDAY");
         System.out.println(list);
+        System.out.println(list.getIndex(3));
+        list.remove("BMW");
         System.out.println(list.size());
-        //list.remove("TOYOTA");
-        //System.out.println(list);
-        //System.out.println(list.size());
-        System.out.println(list.getIndex(0));
-
     }
 }

@@ -35,6 +35,7 @@ public class SingleLinkedList implements GBList{
     private void add(Node current, String val){
         if (current.next == null){
             current.next = new Node(val);
+            current.next.prev = current;
             return;
         }
         add(current.next, val);
@@ -77,19 +78,23 @@ public class SingleLinkedList implements GBList{
     private static class Node{
         private String val;
         private Node next;
+        private Node prev;
 
         public Node(String val){
-            this(val, null);
-
+            this.val = val;
+            this.next = null;
         }
 
         public String toString(){
-            return "Node{" + "val=" + val + '\'' + ", next=" + next + '}';
+            if(prev == null){
+                return "Node{" + "val=" + val + '\'' + ", next=" + next + '}';
+            } else return "Node{" + "prev=" + prev.val + '\'' + ", val=" + val + '\'' + ", next=" + next + '}';
         }
 
-        public Node(String val, Node next){
+        public Node(Node prev, String val, Node next){
             this.val = val;
             this.next = next;
+            this.prev = prev;
         }
 
         public void setNext(Node next){

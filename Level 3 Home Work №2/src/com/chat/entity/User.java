@@ -1,5 +1,7 @@
 package com.chat.entity;
 
+import com.chat.db.UserService;
+
 public class User {
     private String nickname;
     private int id;
@@ -27,5 +29,11 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+
+    public static void main(String[] args) {
+        UserService userService = new UserService();
+        System.out.println(userService.getUser("n1@mail.com", "11"));
     }
 }

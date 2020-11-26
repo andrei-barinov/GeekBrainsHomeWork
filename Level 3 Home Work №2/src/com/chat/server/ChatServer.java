@@ -36,28 +36,31 @@ public class ChatServer implements Server {
     @Override
     public void broadcastMessage(String message) {
         String[] inputMessage = message.split("\\s");
-        String ourClient = inputMessage[0].substring(0, inputMessage[0].length()-1);
-        clients.forEach(client -> {
-            if(!ourClient.equals(client.getName())){
-                client.sendMessage(message);
+        String nickname = inputMessage[0].substring(0, inputMessage[0].length()-1);
+        for(ClientHandler client: clients){
+            if(client.getName().equals(nickname)){
+                continue;
             }
-        });
+            else client.sendMessage(message);
+        }
     }
 
+
+
     @Override
-    public void sendMsgToClient(String message){
-        String[] inputMessage = message.split("\\s");
-        String ourClient = inputMessage[2];
-        String newMessage = "";
-        for(int i=3; i < inputMessage.length; i++){
-            newMessage += inputMessage[i] + " ";
-        }
-        newMessage = inputMessage[0].substring(0, inputMessage[0].length()-1) + ": " + newMessage;
-        for(ClientHandler client: clients){
-            if(ourClient.equals(client.getName())){
-                client.sendMessage(newMessage);
+    public void sendMessageToClient(String message){
+            String[] inputMessage = message.split("\\s");
+            String ourClient = inputMessage[2];
+            String newMessage = "";
+            for(int i=3; i < inputMessage.length; i++){
+                newMessage += inputMessage[i];
+                newMessage = inputMessage[2] + ": " + newMessage;
             }
-        }
+            for(ClientHandler client: clients){
+                if(ourClient.equals(client.getName())){
+                    client.sendMessage(newMessage);
+                }
+            }
     }
 
     @Override

@@ -13,6 +13,7 @@ public class ClientApp {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
+
             new Thread(() ->{
                 try {
                     while (true){
@@ -22,6 +23,7 @@ public class ClientApp {
                 } catch (IOException e){
                     throw new RuntimeException("Что-то пошло не так", e);
                 }
+
             }).start();
 
             Scanner scanner = new Scanner(System.in);
@@ -40,4 +42,5 @@ public class ClientApp {
             e.printStackTrace();
         }
     }
+
 }

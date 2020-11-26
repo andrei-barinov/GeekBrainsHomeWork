@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
-public class DBService {
-    private DBService(){};
+public class DataSource {
+    private DataSource(){};
 
     public static Connection getConnection(){
         try {
@@ -23,8 +22,7 @@ public class DBService {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Что-то пошло не так", e);
+            throw new RuntimeException("Что-то пошло не так при закрытии соединения", e);
         }
     }
 }
-

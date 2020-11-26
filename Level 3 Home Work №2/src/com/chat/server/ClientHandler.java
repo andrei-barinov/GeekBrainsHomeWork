@@ -90,17 +90,14 @@ public class ClientHandler {
         try {
             while (true){
                 String message = in.readUTF();
-                if(message.startsWith("/w"))
-                {
-                    server.sendMsgToClient(name + ": " + message);
-                }
-                else if(message.equals("-exit")){
+                if(message.equals("-exit")){
+                    closeConnection();
                     return;
                 }
-                else{
-                    message = name + ": " + message;
-                    server.broadcastMessage(message);
+                else if(message.startsWith("/w")){
+                    server.sendMessageToClient(name + ": " + message);
                 }
+                else server.broadcastMessage(name + ": " + message);
             }
         } catch (IOException e){
             throw new RuntimeException("Что-то пошло не так", e);
@@ -130,6 +127,28 @@ public class ClientHandler {
     @Override
     public int hashCode() {
         return Objects.hash(server, socket, in, out, name);
+    }
+
+    public void closeConnection(){
+        server.unsubscribe(this);
+        server.broadcastMessage(name + " вышел из чата");
+        try {
+            in.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        try {
+            out.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        try {
+            socket.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
 

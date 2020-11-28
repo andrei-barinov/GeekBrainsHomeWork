@@ -31,6 +31,9 @@ public class UserRepository {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        finally {
+            DataSource.close(connection);
+        }
         return Optional.empty();
     }
 }

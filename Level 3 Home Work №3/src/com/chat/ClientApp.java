@@ -1,8 +1,6 @@
 package com.chat;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -26,13 +24,13 @@ public class ClientApp {
 
             }).start();
 
-            Scanner scanner = new Scanner(System.in);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
             while (true){
                 try {
                     while (true){
                         //System.out.println("----------");
-                        out.writeUTF(scanner.nextLine());
+                        out.writeUTF(reader.readLine());
                     }
                 } catch (IOException e){
                     throw new RuntimeException("Что-то пошло не так", e);

@@ -25,8 +25,13 @@ public class GasPool {
 
     @Override
     public String toString() {
-        return "GasPool{" +
-                "size = " + size +
-                '}';
+        lock.writeLock().lock();
+        try{
+            return "GasPool{" +
+                    "size = " + size +
+                    '}';
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 }

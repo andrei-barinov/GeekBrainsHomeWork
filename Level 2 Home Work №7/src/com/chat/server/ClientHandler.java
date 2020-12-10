@@ -1,10 +1,12 @@
 package com.chat.server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import javax.xml.crypto.Data;
+import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientHandler {
     private Server server;
@@ -49,6 +51,7 @@ public class ClientHandler {
         try {
             while (true){
                 String credentials = in.readUTF();
+                AtomicBoolean isAuth = new AtomicBoolean(false);
                 /**
                  * "-auth n1@email.com 1"
                  */
@@ -65,8 +68,10 @@ public class ClientHandler {
                                         if(!server.isLoggedIn(user.getNickname())) {
                                             sendMessage("Аутентификация прошла успешно");
                                             name = user.getNickname();
-                                            server.broadcastMessage(name + " вошел в чат");
+                                            server.entrIsTrue(name + " вошел в чат");
                                             server.subscribe(this);
+                                            isAuth.set(true);
+                                            server.printHistory(doFileReader(), this);
                                         }else {
                                             sendMessage("Текущий пользователь уже зарегистрирован");
                                         }
@@ -79,7 +84,9 @@ public class ClientHandler {
                                     }
                             );
                 }
-                return;
+                if(isAuth.get()){
+                    break;
+                }
             }
         }catch (IOException e){
             throw new RuntimeException("Что-то пошло не так", e);
@@ -88,12 +95,17 @@ public class ClientHandler {
 
     private void receiveMessage(){
         try {
+            Date date = new Date();
             while (true){
                 String message = in.readUTF();
                 if(message.equals("-exit")){
+                    server.broadcastMessage(message);
                     return;
                 }
-                server.broadcastMessage(message);
+                else if(message.startsWith("/w")){
+                    server.sendMessageToClient(name + ": " + message);
+                }
+                else server.broadcastMessage(name + ": " + message);
             }
         } catch (IOException e){
             throw new RuntimeException("Что-то пошло не так", e);
@@ -123,6 +135,64 @@ public class ClientHandler {
     @Override
     public int hashCode() {
         return Objects.hash(server, socket, in, out, name);
+    }
+
+    public void closeConnection(){
+        server.unsubscribe(this);
+        server.broadcastMessage(name + " вышел из чата");
+        try {
+            socket.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        try {
+            in.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        try {
+            out.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public String doFileReader(){
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader(
+                            new File("/Users/barinovaa/Desktop/IDEA/Projects/Level 2 Home Work №7/src/com/chat" +
+                                    "/history/history.txt")
+                    )
+            );
+
+            String message = "";
+            ArrayList<String> arr = new ArrayList<>();
+            String line;
+            while ((line = br.readLine()) != null){
+                arr.add(line);
+            }
+            if(arr.size() <= 100){
+                for(String str: arr){
+                    message += str + "\n";
+                }
+                return message;
+            }
+            else {
+                int a = arr.size();
+                int b = a - 100;
+                for(int i = b - 1; i <= b + 100 - 1; i++){
+                    message += arr.get(i) + "\n";
+                }
+                return message;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
 

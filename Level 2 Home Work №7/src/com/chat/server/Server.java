@@ -7,5 +7,10 @@ public interface Server {
     boolean isLoggedIn(String nickname);
     void subscribe(ClientHandler client);
     void unsubscribe(ClientHandler client);
+    void sendMessageToClient(String message);
+    void doFileWriter(String message);
+    void printHistory (String message, ClientHandler client);
+    void entrIsTrue(String message);
+    void outIsTrue(String message);
     AuthenticationService getAuthenticationService();
 }

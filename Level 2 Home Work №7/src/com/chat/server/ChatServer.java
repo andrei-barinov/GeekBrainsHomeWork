@@ -3,9 +3,13 @@ package com.chat.server;
 import com.chat.auth.AuthenticationService;
 import com.chat.auth.BasicAuthenticationService;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,24 +39,59 @@ public class ChatServer implements Server {
 
     @Override
     public void broadcastMessage(String message) {
-        if (message.startsWith("/w")) {
-            String[] inputMessage = message.split("\\s");
-            String ourClient = inputMessage[1];
-            String newMessage = "";
-            for(int i=2; i < inputMessage.length; i++){
-                newMessage += inputMessage[i];
+        String[] inputMessage = message.split("\\s");
+        String nickname = inputMessage[0].substring(0, inputMessage[0].length()-1);
+        Date date = new Date();
+        //message = date + " " + message;
+        for(ClientHandler client: clients){
+            if(client.getName().equals(nickname)){
+                continue;
             }
+            else client.sendMessage(message);
+        }
+        doFileWriter(message);
+    }
+
+    public void entrIsTrue(String message) {
+        String[] inputMessage = message.split("\\s");
+        String nickname = inputMessage[1].substring(0, inputMessage[1].length()-1);
+        for(ClientHandler client: clients){
+            if(client.getName().equals(nickname)){
+                continue;
+            }
+            else client.sendMessage(message);
+        }
+    }
+
+    public void outIsTrue(String message) {
+        String[] inputMessage = message.split("\\s");
+        String nickname = inputMessage[1].substring(0, inputMessage[1].length()-1);
+        message = inputMessage[1];
+        for(ClientHandler client: clients){
+            if(client.getName().equals(nickname)){
+                client.sendMessage(message);
+            }
+            else continue;
+        }
+    }
+
+    @Override
+    public void sendMessageToClient(String message){
+        Date date = new Date();
+            String[] inputMessage = message.split("\\s");
+            String ourClient = inputMessage[2];
+            String newMessage = "";
+            for(int i=3; i < inputMessage.length; i++){
+                newMessage += inputMessage[i] + " ";
+            }
+            newMessage = inputMessage[2] + ": " + newMessage;
+            newMessage = date + " " + newMessage;
             for(ClientHandler client: clients){
                 if(ourClient.equals(client.getName())){
                     client.sendMessage(newMessage);
                 }
             }
-        }
-        else clients.forEach(client -> {
-            client.sendMessage(message);
-        });
-
-
+            doFileWriter(newMessage);
     }
 
     @Override
@@ -78,5 +117,26 @@ public class ChatServer implements Server {
         return authenticationService;
     }
 
+    public void doFileWriter(String message){
+        try {
+            BufferedWriter bw = new BufferedWriter(
+              new FileWriter(
+                      new File("/Users/barinovaa/Desktop/IDEA/Projects/Level 2 Home Work №7/src/com/chat" +
+                              "/history/history.txt"),
+                              true
+              )
+            );
 
+            bw.newLine();
+            bw.write(message);
+            bw.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void printHistory (String message, ClientHandler client){
+                client.sendMessage(message);
+    }
 }

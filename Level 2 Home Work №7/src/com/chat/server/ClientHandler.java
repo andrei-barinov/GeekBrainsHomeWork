@@ -71,7 +71,7 @@ public class ClientHandler {
                                             server.entrIsTrue(name + " вошел в чат");
                                             server.subscribe(this);
                                             isAuth.set(true);
-                                            server.printHistory(doFileReader(), this);
+                                            //server.printHistory(doFileReader(), this);
                                         }else {
                                             sendMessage("Текущий пользователь уже зарегистрирован");
                                         }
@@ -99,7 +99,9 @@ public class ClientHandler {
             while (true){
                 String message = in.readUTF();
                 if(message.equals("-exit")){
-                    server.broadcastMessage(message);
+                    server.outIsTrue(name + " " + message);
+                    server.unsubscribe(this);
+                    server.broadcastMessage(name + " вышел из чата");
                     return;
                 }
                 else if(message.startsWith("/w")){
@@ -160,7 +162,7 @@ public class ClientHandler {
 
     }
 
-    public String doFileReader(){
+    /*public String doFileReader(){
         try {
             BufferedReader br = new BufferedReader(
                     new FileReader(
@@ -193,7 +195,7 @@ public class ClientHandler {
             e.printStackTrace();
         }
         return "";
-    }
+    }*/
 }
 
 

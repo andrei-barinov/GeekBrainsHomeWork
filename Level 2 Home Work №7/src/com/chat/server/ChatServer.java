@@ -49,7 +49,7 @@ public class ChatServer implements Server {
             }
             else client.sendMessage(message);
         }
-        doFileWriter(message);
+        //doFileWriter(message);
     }
 
     public void entrIsTrue(String message) {
@@ -65,7 +65,7 @@ public class ChatServer implements Server {
 
     public void outIsTrue(String message) {
         String[] inputMessage = message.split("\\s");
-        String nickname = inputMessage[1].substring(0, inputMessage[1].length()-1);
+        String nickname = inputMessage[0];
         message = inputMessage[1];
         for(ClientHandler client: clients){
             if(client.getName().equals(nickname)){
@@ -91,7 +91,7 @@ public class ChatServer implements Server {
                     client.sendMessage(newMessage);
                 }
             }
-            doFileWriter(newMessage);
+            //doFileWriter(newMessage);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ChatServer implements Server {
         return authenticationService;
     }
 
-    public void doFileWriter(String message){
+   /* public void doFileWriter(String message){
         try {
             BufferedWriter bw = new BufferedWriter(
               new FileWriter(
@@ -138,5 +138,5 @@ public class ChatServer implements Server {
 
     public void printHistory (String message, ClientHandler client){
                 client.sendMessage(message);
-    }
+    }*/
 }

@@ -38,8 +38,8 @@ public class ClientApp {
 
             }));
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
+            if(!isDrop.get()){
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 try {
                     while (true){
                         //System.out.println("----------");
@@ -51,10 +51,7 @@ public class ClientApp {
                 } catch (IOException e){
                     throw new RuntimeException("Что-то пошло не так", e);
                 }
-
-
-
-
+            } else return;
         } catch (IOException e){
             e.printStackTrace();
         }
